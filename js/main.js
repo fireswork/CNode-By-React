@@ -1,5 +1,6 @@
 require("../css/reset.min.css");
 require("../css/main.scss");
+require("../css/iconfont.css");
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Cell from '../component/index/cells.js';

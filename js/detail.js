@@ -1,20 +1,20 @@
 require("../css/reset.min.css");
 require("../css/main.scss");
+require("../css/iconfont.css");
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Header from '../component/detail/header.js';
 import Reply from '../component/detail/reply.js';
 import Author from '../component/detail/author.js';
 import AboutTopics from '../component/detail/authorAboutTopics.js';
-import ReplyTopic from '../component/detail/replyTopic.js';
 
 //top
 const Container=React.createClass({
     getInitialState(){
-        return {data: [],loginname: ''};
+        return {data: [],loginname: '',is_collect: false};
     },
     componentDidMount(){
-        this.sendRequest();
+        this.sendRequest('https://cnodejs.org/api/v1/topic/'+window.location.href.split('=')[1],this.setData);
     },
     timeFormat(time){
         const timeDiff=(new Date().getTime()-new Date(time).getTime())/3600000;
@@ -23,21 +23,36 @@ const Container=React.createClass({
         }else if(timeDiff >1){
             return Math.floor(timeDiff)+' 小时前';
         }else if(timeDiff < 1){
-            return Math.floor(timeDiff*60)+' 分钟前';
+            return Math.ceil(timeDiff*60)+' 分钟前';
         }       
     },
-    sendRequest(){
-        fetch('https://cnodejs.org/api/v1/topic/'+window.location.href.split('=')[1],{
+    is_collect(){
+        this.sendRequest('https://cnodejs.org/api/v1/topic_collect/'+this.state.loginname,this.setCollect)
+    },
+    setData(data){
+        this.setState({
+            data: data,
+            loginname: data.author.loginname
+        });
+        this.is_collect();
+    },
+    setCollect(data){
+        data.map((_this)=>{
+            if(_this.id===this.state.data.id){
+                this.setState({
+                    is_collect: true
+                })
+            }
+        })
+    },
+    sendRequest(url,callback){
+        fetch(url,{
             method: 'get',
         }).then((result)=>{
             return result.json().then((data)=>{
                 const resultData=data.data;
                 if(resultData){
-                    console.log(resultData);
-                   this.setState({
-                       data: resultData,
-                       loginname: resultData.author.loginname
-                   });
+                   callback(resultData);
                 }
             })
         })
@@ -49,9 +64,8 @@ const Container=React.createClass({
                         <AboutTopics data={this.state.data} url={'https://cnodejs.org/api/v1/user/'+this.state.loginname} />   
                     </div>                   
                     <div id="content">
-                        <Header data={this.state.data} timeFormat={this.timeFormat} />
-                        <Reply data={this.state.data.replies?this.state.data.replies:[]} timeFormat={this.timeFormat} />   
-                        <ReplyTopic topicID={this.state.data.id}/>                                   
+                        <Header data={this.state.data} timeFormat={this.timeFormat} is_collect={this.state.is_collect}/>
+                        <Reply data={this.state.data.replies?this.state.data.replies:[]} timeFormat={this.timeFormat} topicID={this.state.data.id} />                                                           
                     </div>                   
                </div>
     }

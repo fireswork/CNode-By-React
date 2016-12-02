@@ -237,18 +237,8 @@ header{
                 resize: none;
                 outline: none;
             }
-            .reply_btn{
-                border: none; 
-                padding: 3px 10px;
-                font-size: 14px;
-                transition: all .2s ease-in-out;
-                letter-spacing: 2px;
-                box-shadow: none;
-                line-height: 2em;
-                color: #fff;
-                border-radius: 3px;
+            .reply_btn{              
                 background-color: #08c;
-                outline: none;
                 &:hover{
                     background: #05c;
                 }
@@ -288,6 +278,21 @@ header{
             .dark{
                 color: #666;
             }
+            .agree{
+                vertical-align: text-top;
+                display: none;
+                font-size: 16px;
+            }
+            .already_agree{
+                color: #000;
+                 font-size: 16px;
+                display: inline-block!important;
+            }
+            .agree_count{
+                font-size: 16px;
+                margin: 0 10px 0 5px;
+                vertical-align: text-top;               
+            }
         }
         .reply_content{
             padding-left: 50px;
@@ -298,6 +303,13 @@ header{
                 overflow: auto;
                 margin-bottom: 1em;
                 white-space: pre-wrap;
+            }
+        }
+    }
+    .reply_item{
+        &:hover{
+            .agree{
+                display: inline-block;
             }
         }
     }
@@ -325,6 +337,31 @@ header{
     }
     .floor{
         font-size: 14px;
+    }
+    .common-btn{
+        border: none; 
+        padding: 3px 10px;
+        font-size: 14px;
+        transition: all .2s ease-in-out;
+        letter-spacing: 2px;
+        box-shadow: none;
+        line-height: 2em;
+        color: #fff;
+        border-radius: 3px;
+        outline: none;
+    }
+    .collect{
+        float: right;
+        margin-top: -25px;
+        background-color: #80bd01;
+        padding: 0 7px;
+        &:hover{
+            background-color: #6ba44e;
+        }
+    }
+    .icons{
+        float: right;
+        margin-right: 10px;
     }
 }
 
@@ -485,3 +522,4 @@ header{
         }
     }
 }
+
