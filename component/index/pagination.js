@@ -35,7 +35,7 @@ const Pagination=React.createClass({
     setPaginationStyle(page){
          document.querySelector('.pagination').querySelectorAll('a').forEach((_this,index)=>{       
              if(Number(page.innerText)<=3){
-                 page.setAttribute('class','active');
+                page.setAttribute('class','active');
                  _this.setAttribute('class','');
              }
              else{

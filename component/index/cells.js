@@ -1,5 +1,6 @@
 //cell
 import React from 'react';
+import { Link }  from 'react-router'
 
 const tabsTitle={'ask':'问答','share':'分享','good':'精华','job':'招聘'};
 const Cells=React.createClass({
@@ -7,10 +8,10 @@ const Cells=React.createClass({
         return {data: [],tabTitle: this.props.tab};
     },
     componentWillReceiveProps(newProps){
-        this.props=newProps;
+        if(newProps.page!=this.props.page || newProps.tab!=this.props.tab)
         this.sendRequest(newProps.page,newProps.tab,newProps.limit);
     },
-    sendRequest(page,tab,limit){      
+    sendRequest(page,tab,limit){    
         fetch('https://cnodejs.org/api/v1/topics?page='+page+'&tab='+tab+'&limit='+limit,{
             method: 'get',
         }).then((result)=>{
@@ -35,7 +36,7 @@ const Cells=React.createClass({
         }else if(timeDiff >1){
             return Math.floor(timeDiff)+' 小时前';
         }else if(timeDiff < 1){
-            return Math.floor(timeDiff*60)+' 分钟前';
+            return Math.ceil(timeDiff*60)+' 分钟前';
         }       
     },
     render(){
@@ -55,8 +56,8 @@ const Cells=React.createClass({
                                     <span className="last-reply-time">{this.timeFormat(cell.last_reply_at)}</span>
                                 </span>
                                 <div className="topic-wrapper">
-                                    <span className="cell-tab">{tabsTitle[cell.tab]}</span>
-                                    <a className="cell-topic-title" href={'detail.html?id='+cell.id} title={cell.title}>{cell.title}</a>
+                                    <span className="cell-tab">{cell.good?tabsTitle['good']:tabsTitle[cell.tab]}</span>
+                                   <Link to={'/detail/'+cell.id} className="cell-topic-title" title={cell.title}>{cell.title}</Link>
                                 </div> 
                             </div>
                         )

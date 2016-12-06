@@ -7,18 +7,20 @@ const Reply=React.createClass({
     },
     //回复
     sendReply(){
-        const token=localStorage.getItem('userToken');
-        const content=document.querySelector('.content_area').value;
-        let format;
-        content.indexOf('@')!=-1?format='accesstoken='+token+'&content='+content+'&reply_id='+this.state.reply_id:
-        format='accesstoken='+token+'&content='+content;
-        this.sendRequest('https://cnodejs.org/api/v1/topic/'+this.props.topicID+'/replies',      
-        format,this.replyCallBack);
+        if(this.props.loginTips('回复')){
+            const token=localStorage.getItem('userToken');
+            const content=document.querySelector('.content_area').value;
+            let format;
+            content.indexOf('@')!=-1?format='accesstoken='+token+'&content='+content+'&reply_id='+this.state.reply_id:
+            format='accesstoken='+token+'&content='+content;
+            this.sendRequest('https://cnodejs.org/api/v1/topic/'+this.props.topicID+'/replies',      
+            format,this.replyCallBack);
+        }  
     },
     //回复某人
-    replyThis(event){
-        document.querySelector('.content_area').value='@'+event.target.getAttribute('name')+' ';
-        document.querySelector('.toBottom').click();
+    replyThis(event){ 
+        document.querySelector('.content_area').value='@'+event.target.getAttribute('name')+' ';    
+        this.toBottom();   
         document.querySelector('.content_area').focus();
         this.setState({
             reply_id: event.target.getAttribute('id')
@@ -27,17 +29,22 @@ const Reply=React.createClass({
     replyCallBack(data){
         if(data.success){
             window.location.reload();
-            document.querySelector('.toBottom').click();
+            this.toBottom();
         }
+    },
+    toBottom(){
+        document.querySelector('BODY').scrollTop=document.querySelector('BODY').scrollHeight;
     },
     //点赞或者取消点赞
     clickAgree(event){
-        this.setState({
+        if(this.props.loginTips('点赞')){
+            this.setState({
                 node: event.target
             })
-        this.sendRequest('https://cnodejs.org/api/v1/reply/'+event.target.getAttribute('id')+'/ups',
-        'accesstoken='+localStorage.getItem('userToken'),
-        this.agreeCallBack);
+            this.sendRequest('https://cnodejs.org/api/v1/reply/'+event.target.getAttribute('id')+'/ups',
+            'accesstoken='+localStorage.getItem('userToken'),
+            this.agreeCallBack);
+        }
     },
     agreeCallBack(data){
         let agree_num=Number(this.state.node.nextSibling.innerText);

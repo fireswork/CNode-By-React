@@ -3,27 +3,24 @@ import React from 'react';
 
 const Author=React.createClass({
     getInitialState(){
-        return {authorData: [],score:''};
+        return {authorData: '',score:''};
     },
-    componentWillReceiveProps(newProps){
-        this.sendRequest(newProps.url);       
-    }, 
+    componentWillMount(){
+        this.sendRequest('https://cnodejs.org/api/v1/user/'+localStorage.getItem('loginname'));
+    },
     sendRequest(url){
-        if(url){
-            fetch(url,{
-            method: 'get',
+        fetch(url,{method: 'get',
         }).then((result)=>{
             return result.json().then((data)=>{
                 const resultData=data.data;
                 if(resultData){
                    this.setState({
-                       authorData: resultData.recent_topics,
+                       authorData: resultData,
                        score: resultData.score
                    });
                 }
             })
-        });
-        }      
+        });             
     },
     render(){
         return <div className="panel">
@@ -34,16 +31,16 @@ const Author=React.createClass({
                             <div className="user_card">
                                 <div>
                                     <a className="user_avatar" href="#">
-                                        <img src={this.props.data?this.props.data.avatar_url:''} title={this.props.data?this.props.data.loginname:''}/>
+                                        <img src={this.state.authorData.avatar_url} title={this.state.authorData.loginname}/>
                                     </a>
                                     <span className="user_name">
-                                        <a className="dark" href="#">{this.props.data?this.props.data.loginname:''}</a>
+                                        <a className="dark" href="#">{this.state.authorData.loginname}</a>
                                     </span>
                                     <div className="floor">
-                                        <span className="big">积分: {this.state.score?this.state.score:'xxx'}</span>
+                                        <span className="big">积分: {this.state.score}</span>
                                     </div>
                                     <div className="signature">
-                                        斯人若彩虹，遇上方知有
+                                        "斯人若彩虹，遇上方知有"
                                     </div>
                                 </div>
                             </div>

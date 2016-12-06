@@ -3,19 +3,17 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: {'main': [
-    'webpack/hot/only-dev-server',
-    './js/main.js'
-    ], 'detail': [
-    'webpack/hot/only-dev-server',
-    './js/detail.js'
-]},
+     entry: [
+    "webpack/hot/only-dev-server",
+    "./js/main.js",
+  ],
     output: {
         path: path.resolve(__dirname, './dist'),
-        filename: "[name].js"
+        filename: "main.js"
     },
     devServer:{
-        hot: true
+        hot: true,
+        inline: true
     },
     eslint: {
         configFile :'/.eslintrc'

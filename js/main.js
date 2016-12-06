@@ -3,41 +3,21 @@ require("../css/main.scss");
 require("../css/iconfont.css");
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Cell from '../component/index/cells.js';
-import Tab from '../component/index/tab.js';
-import Pagination from '../component/index/pagination.js'
-import Login from '../component/index/login.js'
+import { Router, Route, hashHistory } from 'react-router';
+import Content from './index.js';
+import Detail from './detail.js';
+import Message from './message.js';
 
 //top
-const Content=React.createClass({
-    getInitialState(){
-        return {tabTitle: 'ask',thisPage: 1};
-    },
-    //tab-click
-    getTabChange(newTab){
-        this.setState({
-            tabTitle: newTab,
-        });
-    },
-    //pagination-click
-    getPaninationChange(newPage){
-        this.setState({
-            thisPage: newPage,
-        })
-    },
+const Main=React.createClass({
     render(){
-       return <div id="main">
-                <Login />
-                <div id="content">
-                    <Tab tabChange={this.getTabChange} />
-                    <Cell page={this.state.thisPage} tab={this.state.tabTitle} limit="12" />
-                    <Pagination pageChange={this.getPaninationChange} tab={this.state.tabTitle} />
-                </div>
-              </div>                  
+        return <div />
     }
 });
 ReactDOM.render(
-    <Content></Content>,document.querySelector('#container')
+    (<Router history={hashHistory}>
+        <Route path="/" component={Content}/>
+        <Route path="/detail/:id" component={Detail}/>
+        <Route path="/message" component={Message}/>
+    </Router>),document.querySelector('body')
 );
-
-

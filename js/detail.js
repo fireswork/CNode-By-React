@@ -1,20 +1,29 @@
-require("../css/reset.min.css");
-require("../css/main.scss");
-require("../css/iconfont.css");
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Header from '../component/detail/header.js';
+import Header from '../component/header.js';
+import DetailHeader from '../component/detail/detailHeader.js';
 import Reply from '../component/detail/reply.js';
 import Author from '../component/detail/author.js';
 import AboutTopics from '../component/detail/authorAboutTopics.js';
 
 //top
-const Container=React.createClass({
+const Detail=React.createClass({
     getInitialState(){
-        return {data: [],loginname: '',is_collect: false};
+        return {data: [],loginname: '',is_collect: false,isLogin: localStorage.getItem('userToken')?true:false};
     },
     componentDidMount(){
-        this.sendRequest('https://cnodejs.org/api/v1/topic/'+window.location.href.split('=')[1],this.setData);
+        this.sendRequest('https://cnodejs.org/api/v1/topic/'+window.location.href.split('/detail/')[1],this.setData);
+    },
+    reload(){
+        window.location.reload();
+    },
+    loginTips(tips){
+        if(!localStorage.getItem('userToken')){
+            alert('登录后才能'+tips);
+            return false;
+        }else{
+            return true;
+        }
     },
     timeFormat(time){
         const timeDiff=(new Date().getTime()-new Date(time).getTime())/3600000;
@@ -26,6 +35,7 @@ const Container=React.createClass({
             return Math.ceil(timeDiff*60)+' 分钟前';
         }       
     },
+    //是否收藏
     is_collect(){
         this.sendRequest('https://cnodejs.org/api/v1/topic_collect/'+this.state.loginname,this.setCollect)
     },
@@ -58,20 +68,23 @@ const Container=React.createClass({
         })
     },
     render(){
-        return <div className="detail-container">
-                    <div id="sidebar">
-                        <Author data={this.state.data.author} url={'https://cnodejs.org/api/v1/user/'+this.state.loginname} isAuthor='true' />
-                        <AboutTopics data={this.state.data} url={'https://cnodejs.org/api/v1/user/'+this.state.loginname} />   
-                    </div>                   
-                    <div id="content">
-                        <Header data={this.state.data} timeFormat={this.timeFormat} is_collect={this.state.is_collect}/>
-                        <Reply data={this.state.data.replies?this.state.data.replies:[]} timeFormat={this.timeFormat} topicID={this.state.data.id} />                                                           
-                    </div>                   
+        return <div id="container">
+                    <Header isLogin={this.state.isLogin}/>
+                    <div id="main">
+                        <div className="detail-container">
+                            <div id="sidebar">
+                                <Author data={this.state.data.author} url={this.state.loginname} isAuthor='true' />
+                                <AboutTopics data={this.state.data} url={this.state.loginname} reload={this.reload} />   
+                            </div>                   
+                            <div id="content">
+                                <DetailHeader data={this.state.data} timeFormat={this.timeFormat} is_collect={this.state.is_collect} loginTips={this.loginTips} />
+                                <Reply data={this.state.data.replies?this.state.data.replies:[]} timeFormat={this.timeFormat} topicID={this.state.data.id} loginTips={this.loginTips} />                                                           
+                            </div>                   
+                        </div>
+                    </div>
                </div>
     }
 });
-ReactDOM.render(
-    <Container id="detail-content"></Container>,document.querySelector('#main')
-)
+module.exports=Detail;
 
 

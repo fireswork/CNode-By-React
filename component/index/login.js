@@ -14,9 +14,9 @@ const Login=React.createClass({
         this.sendRequest(document.querySelector('.accesstoken-input').value)
     },
     focus(){
-            this.setState({
-                failed: false,
-            })         
+        this.setState({
+            failed: false,
+        })         
     },
     sendRequest(token){   
         fetch('https://cnodejs.org/api/v1/accesstoken',{
@@ -33,7 +33,9 @@ const Login=React.createClass({
                         success: true,
                         data: data
                     });
-                    localStorage.setItem("userToken",token); 
+                    localStorage.setItem("userToken",token);
+                    localStorage.setItem("loginname",this.state.data.loginname);
+                    this.props.loginStatus(true);
                 }else{
                     this.setState({
                         failed: true

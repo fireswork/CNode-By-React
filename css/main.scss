@@ -26,13 +26,44 @@ header{
     padding: 10px;
     width: 100%;
     background: #444;
-    .logo{
+    .header_wrap{
+        text-align: left;
+        padding: 0 10px;
+        max-width: 90%;
+        margin: auto;
+        .logo{
         background-image: url(./img/cnodejs_light.svg);
         background-repeat: no-repeat;
+        display: inline-block;
         width: 120px;
         height: 30px;
         margin: auto;     
+        a{
+            display: block;
+            height: 100%;
+        }
     }    
+    .navbar{
+        float: right;
+        ul{
+            display: block;
+            li{
+                float: left;
+                line-height: 36px;
+                a{
+                    color: #ccc;
+                    font-size: 12px;
+                    text-decoration: none;
+                    display: block;
+                    padding: 0 20px;
+                    &:hover{
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+  }  
 }
 #content{
     .panel-header{
@@ -244,6 +275,9 @@ header{
                 }
             }
     }
+    .message_inner{
+        padding: 0;
+    }
     .topic{
         padding: 10px;
         border-top: 1px solid #e5e5e5;
@@ -362,6 +396,26 @@ header{
     .icons{
         float: right;
         margin-right: 10px;
+    }
+    .breadcrumb{
+        display: block;
+        overflow: hidden;
+        li{
+            float: left;
+            a{
+                color: #80bd01;
+                &:hover{
+                    color: #08c;
+                }
+            }
+            .divider{
+                padding: 0 5px;
+                color: #ccc;
+            }           
+        }
+        .active{
+                color: #999;
+            }
     }
 }
 
