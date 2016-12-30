@@ -28,7 +28,6 @@ header{
     background: #444;
     .header_wrap{
         text-align: left;
-        padding: 0 10px;
         max-width: 90%;
         margin: auto;
         .logo{
@@ -58,6 +57,15 @@ header{
                     padding: 0 20px;
                     &:hover{
                         color: #fff;
+                    }
+                    .messages_count{
+                        border-radius: 8px;
+                        padding: 0 5px;
+                        background-color: #80bd01;
+                        color: #fff;
+                        margin-right: .5em;
+                        font-size: 13px;
+                        font-family: Microsoft Yahei;
                     }
                 }
             }
@@ -268,12 +276,28 @@ header{
                 resize: none;
                 outline: none;
             }
-            .reply_btn{              
+        .reply_btn{              
                 background-color: #08c;
                 &:hover{
                     background: #05c;
                 }
             }
+        .user_big_avatar{
+            float: left;
+            margin-right: 10px;
+            .user_avatar{
+                width: 40px;
+                height: 40px;
+                display: inline-block;
+            }
+        }
+        .user_profile{
+            clear: left;
+        }
+        .col_fade{
+            color: #ababab;
+            font-size: 14px;
+        }
     }
     .message_inner{
         padding: 0;
@@ -308,9 +332,6 @@ header{
                 .reply_time{
                     margin-left: 5px;
                 }
-            }
-            .dark{
-                color: #666;
             }
             .agree{
                 vertical-align: text-top;
@@ -350,7 +371,7 @@ header{
     a{
         color: #08c;
         text-decoration: none;
-        display: inline-block;
+        display: inline;
     }
     .unstyled{
         margin-left: 0;
@@ -363,8 +384,12 @@ header{
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                display: inline-block;
             }            
         }
+    }
+    .dark{
+        color: #666;
     }
     .author_link{
         display: inline;
@@ -384,7 +409,7 @@ header{
         border-radius: 3px;
         outline: none;
     }
-    .collect{
+    .collect,.report{
         float: right;
         margin-top: -25px;
         background-color: #80bd01;
@@ -392,6 +417,12 @@ header{
         &:hover{
             background-color: #6ba44e;
         }
+        a{
+            color: #fff;
+        }
+    }
+    .report{
+        float: none;
     }
     .icons{
         float: right;
@@ -455,6 +486,7 @@ header{
                     .user_avatar{
                         vertical-align: middle; 
                         margin-right: .5em;
+                        display: inline-block;
                         img{
                             width: 48px;
                              height: 48px;
@@ -576,4 +608,62 @@ header{
         }
     }
 }
+.reportTopic{
+    select{
+        display: inline-block;
+        padding: 4px 6px;
+        font-size: 14px;
+        color: #555;
+        vertical-align: middle;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        width: 220px;
+        margin-left: 10px;
+        outline: none;
+    }
+    input{
+        border: 1px solid #ccc;
+        width: 100%;
+        resize: none;
+        height: 30px;
+        margin-top: 10px;
+        border-radius: 5px;
+        padding-left: 10px;
+        font-size: 14px;
+        outline: none;
+    }
+    textarea{
+        width: 100%;
+        margin-top: 10px;
+        border-radius: 5px;
+        height: 450px;
+        padding-left: 10px;
+        outline: none;
+        resize: none;
+        border-bottom: 1px solid #eee;
+    }
+    button{
+        margin-top: 20px;
+    }
+}
+.load_wrap{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.1);
+    .loader{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin: -25px 0 0 -25px;
+        div{
+            opacity: 1!important;
+        }
+    }
+}
+
 

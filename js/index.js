@@ -1,32 +1,42 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Header from '../component/header.js';
+import Header from '../component/public/header.js';
 import Cell from '../component/index/cells.js';
 import Tab from '../component/index/tab.js';
 import Pagination from '../component/index/pagination.js';
 import Login from '../component/index/login.js';
-
+import { Link } from 'react-router';
+import Load from '../component/public/load.js';
 
 //top
 const Content=React.createClass({
     getInitialState(){     
-        return {tabTitle: 'ask',thisPage: 1,isLogin: localStorage.getItem('userToken')?true:false};
-    },
-    //tab-click
-    getTabChange(newTab){
-        this.setState({
-            tabTitle: newTab,
-        });
+        return {tabTitle: 'ask',isLogin: localStorage.getItem('userToken')?true:false,data: ''};
     },
     loginStatus(status){
         this.setState({
             isLogin: status
         })       
     },
-    //pagination-click
-    getPaninationChange(newPage){
-        this.setState({
-            thisPage: newPage,
+    componentWillMount(){
+        this.sendRequest('https://cnodejs.org/api/v1/topics?page='+1+'&tab='+this.state.tabTitle+'&limit='+20);
+    },
+    sendRequest(url,tab){
+        if(tab){
+            this.setState({
+                tabTitle: tab
+            }); 
+        }   
+        fetch(url,{
+            method: 'get',
+        }).then((result)=>{
+            return result.json().then((data)=>{
+                const resultData=data.data;
+                if(resultData){
+                   this.setState({
+                       data:resultData
+                   });
+                }
+            })
         })
     },
     render(){
@@ -35,11 +45,11 @@ const Content=React.createClass({
                 <div id="main">
                     <Login isLogin={this.state.isLogin} loginStatus={this.loginStatus} />
                     <div id="content">
-                        <Tab tabChange={this.getTabChange} />
-                        <Cell page={this.state.thisPage} tab={this.state.tabTitle} limit="20" />
-                        <Pagination pageChange={this.getPaninationChange} tab={this.state.tabTitle} />
+                        <Tab sendRequest={this.sendRequest} />
+                        <Cell data={this.state.data} />
+                        <Pagination sendRequest={this.sendRequest} tab={this.state.tabTitle} />
                     </div>
-                </div>  
+                </div>
               </div>                
     }
 });

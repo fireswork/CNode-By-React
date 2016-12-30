@@ -12,7 +12,7 @@ module.exports = {
         filename: "main.js"
     },
     devServer:{
-        hot: true,
+        hot: false,
         inline: true
     },
     eslint: {
@@ -24,17 +24,17 @@ module.exports = {
                 warnings: false
             }
         }),
-        new webpack.DefinePlugin({
+        new webpack.DefinePlugin({  
         "process.env": { 
             NODE_ENV: JSON.stringify("production") 
         }
-}),
+    }),
         new ExtractTextPlugin("package.css"),
         new webpack.HotModuleReplacementPlugin()
     ],
     module: {
         loaders: [
-          {test: /\.jsx?$/,exclude: /(node_modules|bower_components)/,loader: 'babel',query: {presets: ['react', 'es2015']}},
+          {test: /\.jsx?$/,exclude: /(node_modules|bower_components)/,loader: 'babel-loader',query: {presets: ["es2015", "react"]}},
           {test: /\.(scss|css)$/,loader:  ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")},
           {test: /\.(gif|jpg|png|woff|svg|eot|ttf|otf|JPG)$/, loader: "url?limit=10000"},
           {test: '/\.js$/',exclude: /node_modules/,loader: ['babel-loader', 'eslint-loader']}

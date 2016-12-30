@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Header from '../component/header.js';
+import Header from '../component/public/header.js';
 import DetailHeader from '../component/detail/detailHeader.js';
 import Reply from '../component/detail/reply.js';
 import Author from '../component/detail/author.js';
 import AboutTopics from '../component/detail/authorAboutTopics.js';
+import swal from 'sweetalert';
 
 //top
 const Detail=React.createClass({
@@ -19,7 +19,7 @@ const Detail=React.createClass({
     },
     loginTips(tips){
         if(!localStorage.getItem('userToken')){
-            alert('登录后才能'+tips);
+            swal('登录后才能'+tips,'','error');
             return false;
         }else{
             return true;
@@ -37,7 +37,7 @@ const Detail=React.createClass({
     },
     //是否收藏
     is_collect(){
-        this.sendRequest('https://cnodejs.org/api/v1/topic_collect/'+this.state.loginname,this.setCollect)
+        this.sendRequest('https://cnodejs.org/api/v1/topic_collect/'+localStorage.getItem('loginname'),this.setCollect)
     },
     setData(data){
         this.setState({
@@ -73,7 +73,7 @@ const Detail=React.createClass({
                     <div id="main">
                         <div className="detail-container">
                             <div id="sidebar">
-                                <Author data={this.state.data.author} url={this.state.loginname} isAuthor='true' />
+                                <Author data={this.state.data.author} sendRequest={this.sendRequest} url={this.state.loginname} isAuthor='true'/>
                                 <AboutTopics data={this.state.data} url={this.state.loginname} reload={this.reload} />   
                             </div>                   
                             <div id="content">

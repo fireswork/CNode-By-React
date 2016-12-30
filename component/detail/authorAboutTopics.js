@@ -12,7 +12,7 @@ const AboutTopics=React.createClass({
         }         
     },
     showTopics(event){
-        document.querySelector('.unstyled').querySelectorAll('li').forEach((_this,index)=>{
+        Array.from(document.querySelector('.unstyled').querySelectorAll('li')).forEach((_this,index)=>{
             _this.setAttribute('class',_this.getAttribute('class').replace('display-none'),'');
         })
         event.target.style.display='none';

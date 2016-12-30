@@ -2,32 +2,16 @@
 import React from 'react';
 import { Link }  from 'react-router'
 
-const tabsTitle={'ask':'问答','share':'分享','good':'精华','job':'招聘'};
 const Cells=React.createClass({
     getInitialState(){
-        return {data: [],tabTitle: this.props.tab};
+        return {data: [],tabTitle: {'ask':'问答','share':'分享','good':'精华','job':'招聘'}};
     },
     componentWillReceiveProps(newProps){
-        if(newProps.page!=this.props.page || newProps.tab!=this.props.tab)
-        this.sendRequest(newProps.page,newProps.tab,newProps.limit);
-    },
-    sendRequest(page,tab,limit){    
-        fetch('https://cnodejs.org/api/v1/topics?page='+page+'&tab='+tab+'&limit='+limit,{
-            method: 'get',
-        }).then((result)=>{
-            return result.json().then((data)=>{
-                const resultData=data.data;
-                if(resultData){
-                   this.setState({
-                        data: resultData,
-                        tabTitle: this.props.tab
-                    })
-                }
-            })
-        })
-    },
-    componentDidMount(){
-        this.sendRequest(this.props.page,this.props.tab,this.props.limit);
+        if(newProps.data){
+            this.setState({
+                data:newProps.data
+            });
+        }       
     },
     timeFormat(time){
         const timeDiff=(new Date().getTime()-new Date(time).getTime())/3600000;
@@ -46,8 +30,10 @@ const Cells=React.createClass({
                     this.state.data.map((cell,index)=>{
                         return (
                             <div className="cell" key={index}>
-                                <img className="user-img" src={cell.author.avatar_url}/>
-                                <span className="count-reply-visit">
+                                <Link to={'/user/'+cell.author.loginname}>
+                                    <img className="user-img" src={cell.author.avatar_url} title={cell.author.loginname} />
+                                </Link>
+                                <span className={cell.visit_count>=0?'count-reply-visit':'display-none'}>
                                     <span className="count-of-reply">{cell.reply_count}</span>
                                     <span className="character">/</span>
                                     <span className="count-of-visit">{cell.visit_count}</span>
@@ -56,7 +42,7 @@ const Cells=React.createClass({
                                     <span className="last-reply-time">{this.timeFormat(cell.last_reply_at)}</span>
                                 </span>
                                 <div className="topic-wrapper">
-                                    <span className="cell-tab">{cell.good?tabsTitle['good']:tabsTitle[cell.tab]}</span>
+                                    <span className={cell.tab?'cell-tab':'display-none'}>{cell.good?this.state.tabTitle['good']:this.state.tabTitle[cell.tab]}</span>
                                    <Link to={'/detail/'+cell.id} className="cell-topic-title" title={cell.title}>{cell.title}</Link>
                                 </div> 
                             </div>

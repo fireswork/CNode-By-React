@@ -6,7 +6,7 @@ const paginationDataArr=['«','1','2','3','4','5','...','»'];
 const Pagination=React.createClass({
     getInitialState(){
         return {paginationData: paginationDataArr};
-    },
+},
     getCurrentPage(event){
         const thisPage=event.target.innerText;
         if(str.indexOf(thisPage)===-1){
@@ -14,26 +14,25 @@ const Pagination=React.createClass({
             if(thisPage!=this.state.pageNum){
                 this.setPaginationNum(Number(thisPage));
                 this.setPaginationStyle(event.target);
-                this.props.pageChange(Number(thisPage)); 
+                this.props.sendRequest('https://cnodejs.org/api/v1/topics?page='+Number(thisPage)+'&tab='+this.props.tab+'&limit='+20);
             }            
         }         
-},
+    },
     //reset-pagination
     componentWillReceiveProps(newProps){       
-        new Promise((reslove, reject)=>{
-            if(newProps.tab!=this.props.tab){
+    if(newProps.tab!=this.props.tab){
             this.setState({
                 paginationData: paginationDataArr
             });         
-            setTimeout(()=>{
-                reslove()
-            },10);          
-        }
-    }).then(()=>this.refs.firstLi.click());
+                Array.from(document.querySelector('.pagination').querySelectorAll('a')).forEach((_this,index)=>{       
+                _this.setAttribute('class','');     
+        }); 
+        this.refs.firstLi.setAttribute('class','active');               
+    }
 },
     //set-active-li
     setPaginationStyle(page){
-         document.querySelector('.pagination').querySelectorAll('a').forEach((_this,index)=>{       
+            Array.from(document.querySelector('.pagination').querySelectorAll('a')).forEach((_this,index)=>{       
              if(Number(page.innerText)<=3){
                 page.setAttribute('class','active');
                  _this.setAttribute('class','');
@@ -42,7 +41,7 @@ const Pagination=React.createClass({
                  index===4?_this.setAttribute('class','active'):_this.setAttribute('class',''); 
              }       
         });       
-    },
+},
     //update-pagination-num
     setPaginationNum(page){
         if(page >3){
@@ -54,7 +53,7 @@ const Pagination=React.createClass({
                 paginationData: paginationDataArr
             })
         }
-    },
+},
     render(){
         return <div className="pagination" onClick={this.getCurrentPage}>
                     <ul>

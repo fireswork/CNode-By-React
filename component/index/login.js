@@ -1,9 +1,11 @@
 import React from 'react';
-import Author from '../detail/author.js'
+import Author from '../detail/author.js';
+import { Link } from 'react-router';
+import swal from 'sweetalert';
 
 const Login=React.createClass({
     getInitialState(){
-        return {failed: false,success: false,data: {}};
+        return {success: false,data: {}};
     },
      componentWillMount(){
         if(localStorage.getItem("userToken")){
@@ -11,12 +13,12 @@ const Login=React.createClass({
         }
     },
     getUserInfo(){
-        this.sendRequest(document.querySelector('.accesstoken-input').value)
-    },
-    focus(){
-        this.setState({
-            failed: false,
-        })         
+        const token=document.querySelector('.accesstoken-input').value;
+        if(!token){
+            swal('accessToken不能为空','','error');
+            return ;
+        }
+        this.sendRequest(token);
     },
     sendRequest(token){   
         fetch('https://cnodejs.org/api/v1/accesstoken',{
@@ -29,7 +31,6 @@ const Login=React.createClass({
             return result.json().then((data)=>{
                 if(data.success){
                     this.setState({
-                        failed: false,
                         success: true,
                         data: data
                     });
@@ -37,9 +38,7 @@ const Login=React.createClass({
                     localStorage.setItem("loginname",this.state.data.loginname);
                     this.props.loginStatus(true);
                 }else{
-                    this.setState({
-                        failed: true
-                    })
+                    swal(data.error_msg,'','error');
                 }
             })
         })
@@ -50,16 +49,18 @@ const Login=React.createClass({
                         <div className="inner">
                             <p>CNode By React: @Link</p>                           
                             <div>
-                                <input type="text" className="accesstoken-input" onFocus={this.focus} placeholder="输入accesstoken"/>
+                                <input type="text" className="accesstoken-input" placeholder="输入accesstoken"/>
                             </div>                          
                             <button type="button" className="login_button" onClick={this.getUserInfo}>通过 accesstoken 登录</button>
-                             <p className="tips">
-                                <span className={this.state.failed?"failed":'failed display-none'}>无效的accesstoken</span>
-                            </p>
                         </div>
                     </div>
                     <div className={!this.state.success?"display-none":''}>
-                        <Author data={this.state.data} isAuthor='false'/>   
+                        <Author data={this.state.data} isAuthor='false'/>
+                        <div className="panel">
+                            <div className="inner">
+                                <button className="report common-btn"><Link to="/reportTopic">发布话题</Link></button>
+                            </div>
+                        </div>   
                     </div>                
                 </div>
     }

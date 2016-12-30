@@ -17,6 +17,9 @@ const DetailHeader=React.createClass({
             this.sendRequest(is_collect,localStorage.getItem('userToken'),this.props.data.id);
         }              
     },
+    componentWillReceiveProps(newProps){
+        //console.log(newProps);
+    },
     sendRequest(is_collect,token,id){
         fetch('https://cnodejs.org/api/v1/topic_collect/'+is_collect,{
          method: 'post',

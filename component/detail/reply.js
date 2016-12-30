@@ -1,5 +1,6 @@
 //detail-reply
 import React from 'react';
+import swal from 'sweetalert';
 
 const Reply=React.createClass({
     getInitialState(){
@@ -27,9 +28,15 @@ const Reply=React.createClass({
         })
     },
     replyCallBack(data){
-        if(data.success){
-            window.location.reload();
-            this.toBottom();
+        if(data.success===true){
+            swal({
+                title: "回复成功",
+                type: "success",
+                }, function(){
+                    window.location.reload();
+                });
+        }else{
+            swal(data.error_msg+'','','error');
         }
     },
     toBottom(){
@@ -53,7 +60,7 @@ const Reply=React.createClass({
                 data.action==='up'?agree_num++:agree_num--;
                 this.state.node.nextSibling.innerText=agree_num;
             }else{
-                alert(data.error_msg+',你咋这么自恋捏')
+                swal(data.error_msg+',你咋这么自恋捏','','error');
             }
     },
     sendRequest(url,format,callback){   
