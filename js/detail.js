@@ -37,7 +37,8 @@ const Detail=React.createClass({
     },
     //是否收藏
     is_collect(){
-        this.sendRequest('https://cnodejs.org/api/v1/topic_collect/'+localStorage.getItem('loginname'),this.setCollect)
+        const loginname=localStorage.getItem('loginname');
+        if(loginname) this.sendRequest('https://cnodejs.org/api/v1/topic_collect/'+loginname,this.setCollect);
     },
     setData(data){
         this.setState({

@@ -1,14 +1,10 @@
 //detail-content
 import React from 'react';
-import highlight from 'highlight.js';
 
 const tabsTitle={'ask':'问答','share':'分享','good':'精华','job':'招聘'};
 const DetailHeader=React.createClass({
     getInitialState(){
         return {is_collect: this.props.is_collect};
-    },
-    componentDidUpdate(){
-       highlight.initHighlighting();
     },
     isCollect(event){
         if(this.props.loginTips('收藏')){

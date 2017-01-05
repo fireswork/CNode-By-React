@@ -5,7 +5,6 @@ import Tab from '../component/index/tab.js';
 import Pagination from '../component/index/pagination.js';
 import Login from '../component/index/login.js';
 import { Link } from 'react-router';
-import Load from '../component/public/load.js';
 
 //top
 const Content=React.createClass({
@@ -20,6 +19,10 @@ const Content=React.createClass({
     componentWillMount(){
         this.sendRequest('https://cnodejs.org/api/v1/topics?page='+1+'&tab='+this.state.tabTitle+'&limit='+20);
     },
+    componentWillUpdate(){
+        //this.loadStatus('show');
+    },
+   
     sendRequest(url,tab){
         if(tab){
             this.setState({
@@ -35,6 +38,7 @@ const Content=React.createClass({
                    this.setState({
                        data:resultData
                    });
+                   //this.loadStatus('hide');
                 }
             })
         })
