@@ -3,7 +3,7 @@
 <ul>
   <li>学习react时自己搭建的cnode,断断续续在写，基本能看了。</li>
   <li>各种新东西，所以兼容性你懂的</li>
-  <li><a href="https://fireswork.github.io/CNode-By-React">项目预览地址</a></li>
+  <li><a href="https://fireswork.github.io/CNode-By-React">项目预览地址</a></li>
 </ul>
 <h1>相关技术链</h1>
 <ul>
